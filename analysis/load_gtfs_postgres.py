@@ -1,9 +1,18 @@
+"""Charge le référentiel GTFS statique IDFM (agency, routes, stops, calendar, trips, stop_times) dans PostgreSQL."""
+import os
 from pathlib import Path
 import pandas as pd
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-# Connexion Postgres (Docker)
-engine = create_engine("postgresql+psycopg2://transport:transport@localhost:5432/transport_pulse")
+load_dotenv()
+
+DB_URL = (
+    f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}"
+    f"@{os.getenv('POSTGRES_HOST', 'localhost')}:{os.getenv('POSTGRES_PORT', 5432)}"
+    f"/{os.getenv('POSTGRES_DB')}"
+)
+engine = create_engine(DB_URL)
 
 GTFS = Path("data/gtfs")
 

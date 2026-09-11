@@ -1,11 +1,29 @@
+# Environnement
 .env
-data/
-logs/
-reponse_test.json
 .venv/
-__pycache__/
+venv/
+
+# Données & logs
 data/
 logs/
-transport_pulse/target/
-transport_pulse/dbt_packages/
-transport_pulse/logs/
+*.parquet
+reponse_test.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# dbt
+dbt/transport_pulse/target/
+dbt/transport_pulse/dbt_packages/
+dbt/transport_pulse/logs/
+dbt/transport_pulse/profiles.yml
+
+# Docker (volume Postgres local)
+pgdata/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store

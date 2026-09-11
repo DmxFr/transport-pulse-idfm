@@ -1,3 +1,4 @@
+"""Interroge l'API PRIM (SIRI Lite, estimated-timetable) et stocke les passages en Parquet + Postgres."""
 import os
 from datetime import datetime, timezone
 import requests
@@ -49,9 +50,17 @@ def flatten(data: dict) -> pd.DataFrame:
                     })
     return pd.DataFrame(rows)
 
-ENGINE = create_engine("postgresql+psycopg2://transport:transport@localhost:5432/transport_pulse")
+DB_URL = (
+    f"postgresql+psycopg2://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}"
+    f"@{os.getenv('POSTGRES_HOST', 'localhost')}:{os.getenv('POSTGRES_PORT', 5432)}"
+    f"/{os.getenv('POSTGRES_DB')}"
+)
+ENGINE = create_engine(DB_URL)
 
 if __name__ == "__main__":
+    if not API_KEY:
+        raise RuntimeError("IDFM_API_KEY manquante : renseigne-la dans .env")
+
     df = flatten(fetch())
     df = df.drop_duplicates()          # protection anti-doublons
 

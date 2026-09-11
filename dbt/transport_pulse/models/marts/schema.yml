@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: fct_line_punctuality
+    description: "KPI de ponctualité par ligne et par snapshot temps réel"
+    columns:
+      - name: line_code
+        data_tests: [not_null]
+      - name: total_calls
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"

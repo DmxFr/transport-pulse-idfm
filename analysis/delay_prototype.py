@@ -1,3 +1,4 @@
+"""Prototype : calcule le retard d'une ligne (bus 64 / IDFM:C01100) en rapprochant temps réel et GTFS via merge_asof."""
 import glob
 import pandas as pd
 
@@ -31,6 +32,8 @@ tr = tr[tr.line_id == f"STIF:Line::{LINE}:"].copy()
 tr = tr.dropna(subset=["expected_departure"])
 tr["stop_id"] = "IDFM:" + tr["stop_id"].str.split(":").str[-2]
 # ⚠️ Piège timezone : le flux est en UTC, le GTFS en heure locale Paris !
+# ⚠️ Limite connue : ne gère pas le dépassement GTFS >24h (services de nuit, ex. 25:30:00)
+#    -> un passage temps réel après minuit ne sera pas rapproché correctement (voir docs/architecture.md).
 ts = pd.to_datetime(tr["expected_departure"], utc=True, format="ISO8601").dt.tz_convert("Europe/Paris")
 tr["secs"] = ts.dt.hour * 3600 + ts.dt.minute * 60 + ts.dt.second
 print(f"Passages TR ligne 64 : {len(tr)}")
