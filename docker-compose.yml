@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: transport_pulse_db
+    environment:
+      POSTGRES_USER: transport
+      POSTGRES_PASSWORD: transport
+      POSTGRES_DB: transport_pulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: transport_pulse_bi
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:

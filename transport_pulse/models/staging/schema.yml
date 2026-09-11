@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: stg_passages
+    columns:
+      - name: journey_id
+        data_tests: [not_null]
+      - name: departure_status
+        data_tests:
+          - accepted_values:
+              values: ['ON_TIME', 'DELAYED', 'EARLY', 'CANCELLED', 'NO_REPORT', 'ARRIVED', 'MISSED']

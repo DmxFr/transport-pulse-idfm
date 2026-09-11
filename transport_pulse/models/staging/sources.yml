@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: public
+    tables:
+      - name: raw_passages
+      - name: routes
+      - name: trips
+      - name: stop_times
+      - name: stops
